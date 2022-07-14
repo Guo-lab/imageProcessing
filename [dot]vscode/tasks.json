@@ -1,0 +1,47 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        //{
+        //    "label": "BuildPre",
+        //    "type": "shell",
+        //    "command": "export PKG_CONFIG_PATH=\"/usr/local/opt/opencv@2/lib/pkgconfig\"",
+        //},
+        // Tasks just "/usr/local/lib/pkgconfig"
+
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "g++",//"g++ $(pkg-config --libs --cflags opencv) ./*.cpp -o ./${fileBasenameNoExtension}.o",
+            "args": [
+                "`pkg-config", "--libs", "--cflags", "opencv`", //!!!
+				"./*.cpp",
+				"-o",
+                "./tmp/${fileBasenameNoExtension}",
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            },
+            //"options": {
+            //    "env": {"name": "PKG_CONFIG_PATH", "value": "/usr/local/opt/opencv@2/lib/pkgconfig"},
+            //},
+            //"dependsOn":["BuildPre"],
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "cd tmp/ && ./${fileBasenameNoExtension}",
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            },
+            "dependsOn":["Build"],
+        },
+
+    ]
+}
